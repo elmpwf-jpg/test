@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>霞喀羅古道賞楓一日遊指南</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-stone-100 text-stone-800 pb-16">
+
+  <!-- 頂部 Hero Banner -->
+  <header class="relative bg-amber-800 text-white shadow-md">
+    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" 
+         alt="楓紅山景" 
+         class="w-full h-48 object-cover opacity-60">
+    <div class="absolute inset-0 bg-gradient-to-t from-stone-900/80 to-transparent flex flex-col justify-end p-5">
+      <span class="text-xs uppercase tracking-widest bg-amber-600/90 text-white px-2 py-0.5 rounded w-max mb-1.5 font-medium">一日自駕遊指南</span>
+      <h1 class="text-2xl font-bold tracking-tight">霞喀羅古道賞楓行</h1>
+      <p class="text-xs text-stone-200 mt-1 flex items-center gap-2">
+        <span><i class="fa-regular fa-calendar"></i> 12 月 5 日</span>
+        <span>•</span>
+        <span><i class="fa-solid fa-car"></i> 板橋出發 (4人一車)</span>
+      </p>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 mt-4 space-y-4">
+
+    <!-- 即時天氣卡片 (Open-Meteo API 串接尖石山區) -->
+    <section class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="flex items-center gap-2 text-stone-500 text-xs font-medium">
+            <i class="fa-solid fa-cloud-sun text-amber-600"></i> 尖石山區即時氣象
+          </div>
+          <div class="text-2xl font-extrabold text-stone-800 mt-1" id="weather-temp">載入中...</div>
+          <div class="text-xs text-stone-500" id="weather-desc">連線氣象預報服務中...</div>
+        </div>
+        <div class="text-right">
+          <div class="text-xs text-stone-400">降雨機率 / 濕度</div>
+          <div class="text-sm font-semibold text-stone-700 mt-1" id="weather-humidity">--%</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 快捷導航按鈕 -->
+    <section class="grid grid-cols-3 gap-2">
+      <a href="https://www.google.com/maps/dir/?api=1&destination=霞喀羅古道養老端登山口" target="_blank"
+         class="flex flex-col items-center justify-center p-3 bg-white rounded-xl shadow-sm border border-stone-200 text-stone-700 hover:bg-amber-50 active:scale-95 transition">
+        <i class="fa-solid fa-location-dot text-amber-600 text-lg mb-1"></i>
+        <span class="text-xs font-medium">養老登山口</span>
+      </a>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=秀巒軍艦岩" target="_blank"
+         class="flex flex-col items-center justify-center p-3 bg-white rounded-xl shadow-sm border border-stone-200 text-stone-700 hover:bg-amber-50 active:scale-95 transition">
+        <i class="fa-solid fa-mountain text-amber-600 text-lg mb-1"></i>
+        <span class="text-xs font-medium">軍艦岩/控溪</span>
+      </a>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=宇老觀景台" target="_blank"
+         class="flex flex-col items-center justify-center p-3 bg-white rounded-xl shadow-sm border border-stone-200 text-stone-700 hover:bg-amber-50 active:scale-95 transition">
+        <i class="fa-solid fa-binoculars text-amber-600 text-lg mb-1"></i>
+        <span class="text-xs font-medium">宇老觀景台</span>
+      </a>
+    </section>
+
+    <!-- 當日時間軸 -->
+    <section class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200">
+      <h2 class="text-base font-bold text-stone-800 mb-3 flex items-center gap-2">
+        <i class="fa-solid fa-clock text-amber-600"></i> 行程時刻表
+      </h2>
+      <ol class="relative border-l border-amber-200 ml-2 space-y-4">
+        <li class="ml-4">
+          <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-amber-600 rounded-full border border-white"></div>
+          <div class="text-xs text-amber-700 font-semibold">05:00 - 07:45</div>
+          <h3 class="text-sm font-bold text-stone-800">板橋集合出發 ➔ 尖石鄉養老登山口</h3>
+          <p class="text-xs text-stone-500 mt-0.5">行經國道3號、內灣、竹60線，山路狹小請提早會車與停車。</p>
+        </li>
+        <li class="ml-4">
+          <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-amber-600 rounded-full border border-white"></div>
+          <div class="text-xs text-amber-700 font-semibold">08:00 - 16:00 (精華 8hr)</div>
+          <h3 class="text-sm font-bold text-stone-800">霞喀羅古道賞楓健行</h3>
+          <p class="text-xs text-stone-500 mt-0.5">養老端 ➔ 栗園竹林 ➔ 馬鞍楓香 ➔ 白石吊橋折返（含午餐野餐）。</p>
+        </li>
+        <li class="ml-4">
+          <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-amber-600 rounded-full border border-white"></div>
+          <div class="text-xs text-amber-700 font-semibold">16:00 - 17:15</div>
+          <h3 class="text-sm font-bold text-stone-800">登出 ➔ 秀巒軍艦岩與控溪吊橋</h3>
+          <p class="text-xs text-stone-500 mt-0.5">溪谷巨石與河岸楓紅漫步拍照。</p>
+        </li>
+        <li class="ml-4">
+          <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-amber-600 rounded-full border border-white"></div>
+          <div class="text-xs text-amber-700 font-semibold">17:15 - 18:30</div>
+          <h3 class="text-sm font-bold text-stone-800">宇老觀景台短暫停留 ➔ 前往餐廳</h3>
+          <p class="text-xs text-stone-500 mt-0.5">賞夕陽山景、吃熱騰騰臭豆腐暖胃。</p>
+        </li>
+        <li class="ml-4">
+          <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-amber-600 rounded-full border border-white"></div>
+          <div class="text-xs text-amber-700 font-semibold">18:30 - 20:00</div>
+          <h3 class="text-sm font-bold text-stone-800">享用美味晚餐</h3>
+          <p class="text-xs text-stone-500 mt-0.5">（可於下方下拉選單自由切換餐廳與導航）</p>
+        </li>
+        <li class="ml-4">
+          <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-amber-600 rounded-full border border-white"></div>
+          <div class="text-xs text-amber-700 font-semibold">20:00 - 21:30</div>
+          <h3 class="text-sm font-bold text-stone-800">平安返程 ➔ 回到板橋</h3>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 晚餐下拉式選單與動態卡片 -->
+    <section class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-base font-bold text-stone-800 flex items-center gap-2">
+          <i class="fa-solid fa-utensils text-amber-600"></i> 晚餐選擇
+        </h2>
+        <span class="text-xs text-stone-400">點選切換推薦</span>
+      </div>
+
+      <div class="relative mb-3">
+        <select id="restaurantSelect" 
+                class="w-full appearance-none bg-stone-50 border border-stone-300 rounded-xl px-4 py-2.5 text-sm font-medium text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <option value="neiwan_tea">內灣老街｜內灣茶堂客家菜</option>
+          <option value="goose_sister">內灣老街｜鵝姐客家美食</option>
+          <option value="yulao_tofu">宇老山頂｜宇老臭豆腐 & 魯壁一家人</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-stone-400">
+          <i class="fa-solid fa-chevron-down text-xs"></i>
+        </div>
+      </div>
+
+      <!-- 動態展示餐廳資訊 -->
+      <div id="restaurantInfo" class="bg-amber-50/60 rounded-xl p-3 border border-amber-100">
+        <h4 id="restTitle" class="font-bold text-stone-800 text-sm"></h4>
+        <p id="restDesc" class="text-xs text-stone-600 mt-1"></p>
+        <div class="mt-3 flex items-center justify-between">
+          <span id="restTag" class="text-[11px] bg-amber-200/70 text-amber-900 px-2 py-0.5 rounded"></span>
+          <a id="restNavBtn" href="#" target="_blank"
+             class="text-xs bg-amber-700 text-white px-3 py-1.5 rounded-lg flex items-center gap-1 font-medium hover:bg-amber-800">
+            <i class="fa-solid fa-location-arrow text-[10px]"></i> 開啟導航
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 霞喀羅古道全程圖文簡介 -->
+    <section class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200">
+      <h2 class="text-base font-bold text-stone-800 mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-map-location-dot text-amber-600"></i> 古道精華圖文簡介
+      </h2>
+      <p class="text-xs text-stone-500 mb-4">全程約 22K，本次自駕採「養老端」進出折返，坡度平緩、紅葉景致最濃密。</p>
+
+      <div class="space-y-4">
+        <!-- 景點 1: 養老登山口 -->
+        <div class="border-b border-stone-100 pb-3">
+          <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80" 
+               alt="養老登山口森林" class="w-full h-36 object-cover rounded-xl mb-2">
+          <div class="flex justify-between items-baseline">
+            <h4 class="font-bold text-sm text-stone-800">1. 養老端登山口 (22K)</h4>
+            <span class="text-[11px] text-amber-700 font-medium">起登出發點</span>
+          </div>
+          <p class="text-xs text-stone-600 mt-1">自駕停車首選，寬闊步道起點。設有洗手間，前段林相多為闊葉林與松針地毯，坡度極平緩好走。</p>
+        </div>
+
+        <!-- 景點 2: 栗園駐在所 -->
+        <div class="border-b border-stone-100 pb-3">
+          <img src="https://images.unsplash.com/photo-1511497584788-87676104235f?auto=format&fit=crop&w=600&q=80" 
+               alt="栗園竹林" class="w-full h-36 object-cover rounded-xl mb-2">
+          <div class="flex justify-between items-baseline">
+            <h4 class="font-bold text-sm text-stone-800">2. 栗園駐在所 (約 18.5K)</h4>
+            <span class="text-[11px] text-amber-700 font-medium">孟宗竹林秘境</span>
+          </div>
+          <p class="text-xs text-stone-600 mt-1">進入高聳遮天的孟宗竹林區，宛如走入臥虎藏龍武俠場景，微風吹撫時沙沙竹葉聲非常舒壓。</p>
+        </div>
+
+        <!-- 景點 3: 馬鞍駐在所 -->
+        <div class="border-b border-stone-100 pb-3">
+          <img src="https://images.unsplash.com/photo-1508873696983-2df5293cb325?auto=format&fit=crop&w=600&q=80" 
+               alt="馬鞍楓香林" class="w-full h-36 object-cover rounded-xl mb-2">
+          <div class="flex justify-between items-baseline">
+            <h4 class="font-bold text-sm text-stone-800">3. 馬鞍駐在所 (約 17K)</h4>
+            <span class="text-[11px] text-amber-700 font-medium">整段最美楓林</span>
+          </div>
+          <p class="text-xs text-stone-600 mt-1">古道賞楓的最核心熱點！四周種滿百年楓香大樹，12月轉黃轉紅時落葉鋪滿步道，宛如金色地毯。</p>
+        </div>
+
+        <!-- 景點 4: 白石吊橋 -->
+        <div>
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" 
+               alt="白石吊橋溪谷" class="w-full h-36 object-cover rounded-xl mb-2">
+          <div class="flex justify-between items-baseline">
+            <h4 class="font-bold text-sm text-stone-800">4. 白石吊橋 (約 13.5K)</h4>
+            <span class="text-[11px] text-amber-700 font-medium">一日折返終點</span>
+          </div>
+          <p class="text-xs text-stone-600 mt-1">橫跨薩克亞金溪谷，橋長 145 公尺、深百米，景色雄偉壯觀。在此拍照、稍做野餐休息後即刻啟程折返。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 注意事項清單 -->
+    <section class="bg-amber-100/50 rounded-2xl p-4 border border-amber-200 text-xs text-stone-700 space-y-1.5">
+      <div class="font-bold text-stone-800 flex items-center gap-1.5 mb-1 text-sm">
+        <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 行前備忘叮嚀
+      </div>
+      <p>• <b>午餐需自備</b>：古道內無販售任何餐飲，每人需備足乾糧與至少 1,500cc 飲用水。</p>
+      <p>• <b>洋蔥式穿法</b>：山區清晨及午後低溫約 10~15°C，健行流汗後須隨時穿脫保暖防風外套。</p>
+      <p>• <b>必備頭燈照明</b>：冬日天黑早（約 17:00 日落），隨身背包請務必放置頭燈或手電筒。</p>
+    </section>
+
+  </main>
+
+  <!-- 底部固定按鈕 -->
+  <footer class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur border-t border-stone-200 py-2.5 px-4 shadow-lg z-20">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div class="text-xs text-stone-500">
+        12/5 霞喀羅賞楓 4人行
+      </div>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=霞喀羅古道養老端登山口" target="_blank"
+         class="bg-amber-700 text-white text-xs px-4 py-2 rounded-xl font-bold shadow hover:bg-amber-800 transition flex items-center gap-1.5">
+        <i class="fa-solid fa-diamond-turn-right"></i> 一鍵導航出發
+      </a>
+    </div>
+  </footer>
+
+  <!-- 互動腳本：串接天氣與下拉選單 -->
+  <script>
+    // 1. 晚餐店家資料
+    const restaurantData = {
+      neiwan_tea: {
+        title: "內灣茶堂客家菜",
+        desc: "位於內灣老街旁，提供道地擂茶、客家小炒、薑絲大腸與野薑花炒蛋，份量適合4人合菜聚餐。",
+        tag: "老街客家合菜推薦",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=內灣茶堂客家菜"
+      },
+      goose_sister: {
+        title: "鵝姐客家美食",
+        desc: "內灣在地知名客家小吃，招牌客家大湯圓、鹹湯圓與各式家常菜，平價道地出餐快速。",
+        tag: "道地客家古早味",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=內灣老街鵝姐客家美食"
+      },
+      yulao_tofu: {
+        title: "宇老臭豆腐 & 魯壁一家人",
+        desc: "下山途中宇老觀景台旁，招牌特製韭菜醬臭豆腐與馬告香腸，亦可至景觀餐廳享用熱騰騰原民合菜火鍋。",
+        tag: "高山夕陽景觀美食",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=宇老臭豆腐"
+      }
+    };
+
+    function updateRestaurant(key) {
+      const data = restaurantData[key];
+      document.getElementById('restTitle').innerText = data.title;
+      document.getElementById('restDesc').innerText = data.desc;
+      document.getElementById('restTag').innerText = data.tag;
+      document.getElementById('restNavBtn').href = data.mapsUrl;
+    }
+
+    // 監聽下拉選單
+    const selectElem = document.getElementById('restaurantSelect');
+    selectElem.addEventListener('change', (e) => updateRestaurant(e.target.value));
+    updateRestaurant(selectElem.value); // 初始化
+
+    // 2. 串接 Open-Meteo 免費天氣 API (尖石鄉座標 24.60, 121.28)
+    async function fetchWeather() {
+      try {
+        const url = 'https://api.open-meteo.com/v1/forecast?latitude=24.60&longitude=121.28&current=temperature_2m,relative_humidity_2m,weather_code&timezone=Asia%2FTaipei';
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        const temp = Math.round(data.current.temperature_2m);
+        const humidity = data.current.relative_humidity_2m;
+        const code = data.current.weather_code;
+
+        document.getElementById('weather-temp').innerText = `${temp}°C`;
+        document.getElementById('weather-humidity').innerText = `${humidity}%`;
+
+        // 簡易天氣狀態代碼映射
+        let desc = "晴朗舒適";
+        if (code >= 1 && code <= 3) desc = "多雲到陰";
+        else if (code >= 45 && code <= 48) desc = "山區有霧";
+        else if (code >= 51 && code <= 67) desc = "有局部短暫雨";
+        else if (code >= 80) desc = "陣雨，注意步道濕滑";
+
+        document.getElementById('weather-desc').innerText = `目前天氣：${desc}`;
+      } catch (err) {
+        document.getElementById('weather-temp').innerText = "14°C (預報)";
+        document.getElementById('weather-desc').innerText = "山區日夜溫差大，注意保暖";
+        document.getElementById('weather-humidity').innerText = "65%";
+      }
+    }
+    fetchWeather();
+  </script>
+</body>
+</html>

@@ -15,7 +15,7 @@
     }
   </style>
 </head>
-<body class="bg-stone-100 text-stone-800 pb-16">
+<body class="bg-stone-100 text-stone-800 pb-20">
 
   <!-- 頂部 Hero Banner -->
   <header class="relative bg-amber-800 text-white shadow-md">
@@ -35,7 +35,7 @@
 
   <main class="max-w-md mx-auto px-4 mt-4 space-y-4">
 
-    <!-- 即時天氣卡片 (Open-Meteo API 串接尖石山區) -->
+    <!-- 1. 即時天氣卡片 (Open-Meteo API 串接尖石山區) -->
     <section class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200">
       <div class="flex items-center justify-between">
         <div>
@@ -52,36 +52,100 @@
       </div>
     </section>
 
-    <!-- 快捷導航按鈕 -->
-    <section class="grid grid-cols-3 gap-2">
+    <!-- 2. 快捷導航按鈕 -->
+    <section class="grid grid-cols-4 gap-2">
+      <a href="https://www.google.com/maps/dir/?api=1&destination=阿胖豆漿" target="_blank"
+         class="flex flex-col items-center justify-center p-2.5 bg-amber-50/80 rounded-xl shadow-sm border border-amber-200 text-stone-700 hover:bg-amber-100 active:scale-95 transition">
+        <i class="fa-solid fa-mug-hot text-amber-700 text-lg mb-1"></i>
+        <span class="text-[11px] font-bold text-amber-900">中式早餐</span>
+      </a>
       <a href="https://www.google.com/maps/dir/?api=1&destination=霞喀羅古道養老端登山口" target="_blank"
-         class="flex flex-col items-center justify-center p-3 bg-white rounded-xl shadow-sm border border-stone-200 text-stone-700 hover:bg-amber-50 active:scale-95 transition">
+         class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl shadow-sm border border-stone-200 text-stone-700 hover:bg-amber-50 active:scale-95 transition">
         <i class="fa-solid fa-location-dot text-amber-600 text-lg mb-1"></i>
-        <span class="text-xs font-medium">養老登山口</span>
+        <span class="text-[11px] font-medium">養老登山口</span>
       </a>
       <a href="https://www.google.com/maps/dir/?api=1&destination=秀巒軍艦岩" target="_blank"
-         class="flex flex-col items-center justify-center p-3 bg-white rounded-xl shadow-sm border border-stone-200 text-stone-700 hover:bg-amber-50 active:scale-95 transition">
+         class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl shadow-sm border border-stone-200 text-stone-700 hover:bg-amber-50 active:scale-95 transition">
         <i class="fa-solid fa-mountain text-amber-600 text-lg mb-1"></i>
-        <span class="text-xs font-medium">軍艦岩/控溪</span>
+        <span class="text-[11px] font-medium">軍艦岩景點</span>
       </a>
       <a href="https://www.google.com/maps/dir/?api=1&destination=宇老觀景台" target="_blank"
-         class="flex flex-col items-center justify-center p-3 bg-white rounded-xl shadow-sm border border-stone-200 text-stone-700 hover:bg-amber-50 active:scale-95 transition">
+         class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl shadow-sm border border-stone-200 text-stone-700 hover:bg-amber-50 active:scale-95 transition">
         <i class="fa-solid fa-binoculars text-amber-600 text-lg mb-1"></i>
-        <span class="text-xs font-medium">宇老觀景台</span>
+        <span class="text-[11px] font-medium">宇老觀景台</span>
       </a>
     </section>
 
-    <!-- 當日時間軸 -->
+    <!-- 3. 中式早餐選單與完整菜單動態展示 -->
+    <section class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-base font-bold text-stone-800 flex items-center gap-2">
+          <i class="fa-solid fa-mug-hot text-amber-600"></i> 上山前中式早餐與外帶糧
+        </h2>
+        <span class="text-xs text-stone-400">下拉切換店家</span>
+      </div>
+
+      <div class="relative mb-3">
+        <select id="breakfastSelect" 
+                class="w-full appearance-none bg-stone-50 border border-stone-300 rounded-xl px-4 py-2.5 text-sm font-medium text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <option value="apang">竹東｜阿胖豆漿（必吃粄條韭菜蛋餅、福州包）</option>
+          <option value="yuquan">竹東｜玉泉早餐店（水煎包、老字號傳統蛋餅）</option>
+          <option value="steamed_buns">竹東｜竹東無名小籠包 / 早點（現蒸手工小籠包、鹹豆漿）</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-stone-400">
+          <i class="fa-solid fa-chevron-down text-xs"></i>
+        </div>
+      </div>
+
+      <div id="breakfastInfo" class="bg-amber-50/50 rounded-xl p-4 border border-amber-200/80">
+        <div class="flex items-start justify-between border-b border-amber-200/60 pb-2.5 mb-3">
+          <div>
+            <h4 id="bfTitle" class="font-bold text-stone-800 text-base"></h4>
+            <p id="bfDesc" class="text-xs text-stone-600 mt-1"></p>
+            <div class="flex gap-2 mt-1.5 text-[11px] text-stone-500">
+              <span id="bfOpenTime"><i class="fa-regular fa-clock"></i> 營業時間</span>
+            </div>
+          </div>
+          <a id="bfNavBtn" href="#" target="_blank"
+             class="shrink-0 text-xs bg-amber-700 text-white px-3 py-1.5 rounded-lg flex items-center gap-1 font-medium hover:bg-amber-800 shadow-sm">
+            <i class="fa-solid fa-location-arrow text-[10px]"></i> 導航
+          </a>
+        </div>
+
+        <div>
+          <div class="text-xs font-bold text-amber-900 mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-utensils"></i> 完整菜單與登山外帶推薦
+          </div>
+          <div id="bfMenuContainer" class="space-y-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 當日時間軸 -->
     <section class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200">
       <h2 class="text-base font-bold text-stone-800 mb-3 flex items-center gap-2">
         <i class="fa-solid fa-clock text-amber-600"></i> 行程時刻表
       </h2>
       <ol class="relative border-l border-amber-200 ml-2 space-y-4">
         <li class="ml-4">
-          <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-amber-600 rounded-full border border-white"></div>
-          <div class="text-xs text-amber-700 font-semibold">05:00 - 07:45</div>
-          <h3 class="text-sm font-bold text-stone-800">板橋集合出發 ➔ 尖石鄉養老登山口</h3>
-          <p class="text-xs text-stone-500 mt-0.5">行經國道3號、內灣、竹60線，山路狹小請提早會車與停車。</p>
+          <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-stone-400 rounded-full border border-white"></div>
+          <div class="text-xs text-stone-500 font-semibold">05:00 - 06:10</div>
+          <h3 class="text-sm font-bold text-stone-800">板橋集合出發 ➔ 經國道3號至竹東</h3>
+          <p class="text-xs text-stone-500 mt-0.5">清晨車流順暢，約 1 小時多抵達竹東鎮。</p>
+        </li>
+        <li class="ml-4 bg-amber-50/70 p-2.5 rounded-xl border border-amber-200">
+          <div class="absolute -left-1.5 mt-2 w-3 h-3 bg-amber-600 rounded-full border border-white"></div>
+          <div class="text-xs text-amber-700 font-bold flex items-center gap-1">
+            <i class="fa-solid fa-utensils"></i> 06:10 - 06:40【中式早餐補給】
+          </div>
+          <h3 class="text-sm font-bold text-stone-800 mt-0.5">竹東中式早餐站（現場吃＋外帶午餐糧）</h3>
+          <p class="text-xs text-stone-600 mt-1">享用招牌現做熱食，並加買飯糰、包子作為古道中午野餐行動糧。</p>
+        </li>
+        <li class="ml-4">
+          <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-stone-400 rounded-full border border-white"></div>
+          <div class="text-xs text-stone-500 font-semibold">06:40 - 07:50</div>
+          <h3 class="text-sm font-bold text-stone-800">上山路段：竹東 ➔ 內灣 ➔ 養老登山口</h3>
+          <p class="text-xs text-stone-500 mt-0.5">經竹60、竹65線，路幅漸窄請小心會車，直達養老停車場整裝。</p>
         </li>
         <li class="ml-4">
           <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-amber-600 rounded-full border border-white"></div>
@@ -105,151 +169,385 @@
           <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-amber-600 rounded-full border border-white"></div>
           <div class="text-xs text-amber-700 font-semibold">18:30 - 20:00</div>
           <h3 class="text-sm font-bold text-stone-800">享用美味晚餐</h3>
-          <p class="text-xs text-stone-500 mt-0.5">（可於下方下拉選單自由切換餐廳與導航）</p>
+          <p class="text-xs text-stone-500 mt-0.5">（可於下方選單切換餐廳資訊與菜單）</p>
         </li>
         <li class="ml-4">
-          <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-amber-600 rounded-full border border-white"></div>
-          <div class="text-xs text-amber-700 font-semibold">20:00 - 21:30</div>
+          <div class="absolute -left-1.5 mt-1 w-3 h-3 bg-stone-400 rounded-full border border-white"></div>
+          <div class="text-xs text-stone-500 font-semibold">20:00 - 21:30</div>
           <h3 class="text-sm font-bold text-stone-800">平安返程 ➔ 回到板橋</h3>
         </li>
       </ol>
     </section>
 
-    <!-- 晚餐下拉式選單與動態卡片 -->
+    <!-- 5. 晚餐選單與完整菜單動態展示 -->
     <section class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200">
       <div class="flex items-center justify-between mb-2">
         <h2 class="text-base font-bold text-stone-800 flex items-center gap-2">
-          <i class="fa-solid fa-utensils text-amber-600"></i> 晚餐選擇
+          <i class="fa-solid fa-utensils text-amber-600"></i> 晚餐推薦與完整菜單
         </h2>
-        <span class="text-xs text-stone-400">點選切換推薦</span>
+        <span class="text-xs text-stone-400">下拉切換店家</span>
       </div>
 
       <div class="relative mb-3">
         <select id="restaurantSelect" 
                 class="w-full appearance-none bg-stone-50 border border-stone-300 rounded-xl px-4 py-2.5 text-sm font-medium text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
-          <option value="neiwan_tea">內灣老街｜內灣茶堂客家菜</option>
-          <option value="goose_sister">內灣老街｜鵝姐客家美食</option>
-          <option value="yulao_tofu">宇老山頂｜宇老臭豆腐 & 魯壁一家人</option>
+          <option value="neiwan_tea">內灣老街｜內灣茶堂客家菜（老街合菜首選）</option>
+          <option value="goose_sister">內灣老街｜鵝姐客家美食（客家大湯圓、傳統小吃）</option>
+          <option value="yulao_tofu">宇老山頂｜宇老臭豆腐 & 景觀風味餐（高山熱食）</option>
         </select>
         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-stone-400">
           <i class="fa-solid fa-chevron-down text-xs"></i>
         </div>
       </div>
 
-      <!-- 動態展示餐廳資訊 -->
-      <div id="restaurantInfo" class="bg-amber-50/60 rounded-xl p-3 border border-amber-100">
-        <h4 id="restTitle" class="font-bold text-stone-800 text-sm"></h4>
-        <p id="restDesc" class="text-xs text-stone-600 mt-1"></p>
-        <div class="mt-3 flex items-center justify-between">
-          <span id="restTag" class="text-[11px] bg-amber-200/70 text-amber-900 px-2 py-0.5 rounded"></span>
+      <div id="restaurantInfo" class="bg-amber-50/50 rounded-xl p-4 border border-amber-200/80">
+        <div class="flex items-start justify-between border-b border-amber-200/60 pb-2.5 mb-3">
+          <div>
+            <h4 id="restTitle" class="font-bold text-stone-800 text-base"></h4>
+            <p id="restDesc" class="text-xs text-stone-600 mt-1"></p>
+            <div class="flex gap-2 mt-1.5 text-[11px] text-stone-500">
+              <span id="restOpenTime"><i class="fa-regular fa-clock"></i> 營業時間</span>
+            </div>
+          </div>
           <a id="restNavBtn" href="#" target="_blank"
-             class="text-xs bg-amber-700 text-white px-3 py-1.5 rounded-lg flex items-center gap-1 font-medium hover:bg-amber-800">
-            <i class="fa-solid fa-location-arrow text-[10px]"></i> 開啟導航
+             class="shrink-0 text-xs bg-amber-700 text-white px-3 py-1.5 rounded-lg flex items-center gap-1 font-medium hover:bg-amber-800 shadow-sm">
+            <i class="fa-solid fa-location-arrow text-[10px]"></i> 導航
           </a>
+        </div>
+
+        <div>
+          <div class="text-xs font-bold text-amber-900 mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-book-open"></i> 完整菜單與招牌推薦
+          </div>
+          <div id="restMenuContainer" class="space-y-3"></div>
         </div>
       </div>
     </section>
 
-    <!-- 霞喀羅古道全程圖文簡介 -->
+    <!-- 6. 霞喀羅古道精華圖文導覽（含精確座標與防破圖機制） -->
     <section class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200">
       <h2 class="text-base font-bold text-stone-800 mb-2 flex items-center gap-2">
-        <i class="fa-solid fa-map-location-dot text-amber-600"></i> 古道精華圖文簡介
+        <i class="fa-solid fa-map-location-dot text-amber-600"></i> 古道精華圖文導覽
       </h2>
-      <p class="text-xs text-stone-500 mb-4">全程約 22K，本次自駕採「養老端」進出折返，坡度平緩、紅葉景致最濃密。</p>
+      <p class="text-xs text-stone-500 mb-4">全程約 22K，本次自駕採「養老端」進出折返（來回約 19K），坡度平緩好走。</p>
 
       <div class="space-y-4">
         <!-- 景點 1: 養老登山口 -->
         <div class="border-b border-stone-100 pb-3">
           <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80" 
-               alt="養老登山口森林" class="w-full h-36 object-cover rounded-xl mb-2">
+               alt="養老登山口森林" class="w-full h-40 object-cover rounded-xl mb-2 bg-stone-200">
           <div class="flex justify-between items-baseline">
-            <h4 class="font-bold text-sm text-stone-800">1. 養老端登山口 (22K)</h4>
-            <span class="text-[11px] text-amber-700 font-medium">起登出發點</span>
+            <h4 class="font-bold text-sm text-stone-800">1. 養老端登山口 (約 22K)</h4>
+            <span class="text-[11px] text-amber-700 font-medium">座標 24.5828, 121.3112</span>
           </div>
-          <p class="text-xs text-stone-600 mt-1">自駕停車首選，寬闊步道起點。設有洗手間，前段林相多為闊葉林與松針地毯，坡度極平緩好走。</p>
+          <p class="text-xs text-stone-600 mt-1">自駕停車首選，寬闊步道起點。設有洗手間，前段林相多為闊葉林與松針地毯，早晨陽光灑落適合拍起登合照。</p>
         </div>
 
         <!-- 景點 2: 栗園駐在所 -->
         <div class="border-b border-stone-100 pb-3">
-          <img src="https://images.unsplash.com/photo-1511497584788-87676104235f?auto=format&fit=crop&w=600&q=80" 
-               alt="栗園竹林" class="w-full h-36 object-cover rounded-xl mb-2">
+          <img src="https://picsum.photos/id/88/600/360" 
+               onerror="this.onerror=null;this.src='https://dummyimage.com/600x360/4a5d4e/ffffff&text=%E6%A0%97%E5%9C%92%E5%AD%9F%E5%AE%97%E7%AB%B9%E6%9E%97%E7%A7%98%E5%A2%83';"
+               alt="栗園孟宗竹林" 
+               class="w-full h-40 object-cover rounded-xl mb-2 bg-stone-200">
           <div class="flex justify-between items-baseline">
             <h4 class="font-bold text-sm text-stone-800">2. 栗園駐在所 (約 18.5K)</h4>
-            <span class="text-[11px] text-amber-700 font-medium">孟宗竹林秘境</span>
+            <span class="text-[11px] text-amber-700 font-medium">座標 24.5685, 121.2978</span>
           </div>
-          <p class="text-xs text-stone-600 mt-1">進入高聳遮天的孟宗竹林區，宛如走入臥虎藏龍武俠場景，微風吹撫時沙沙竹葉聲非常舒壓。</p>
+          <p class="text-xs text-stone-600 mt-1">高聳遮天的孟宗竹林秘境，微風徐徐竹香四溢，具有強烈武俠氛圍，推薦仰角拍攝竹林穿透光。</p>
         </div>
 
         <!-- 景點 3: 馬鞍駐在所 -->
         <div class="border-b border-stone-100 pb-3">
-          <img src="https://images.unsplash.com/photo-1508873696983-2df5293cb325?auto=format&fit=crop&w=600&q=80" 
-               alt="馬鞍楓香林" class="w-full h-36 object-cover rounded-xl mb-2">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Autumn_leaves_in_Japan.jpg/640px-Autumn_leaves_in_Japan.jpg" 
+               onerror="this.onerror=null;this.src='https://images.pexels.com/photos/33109/fall-autumn-red-season.jpg?auto=compress&cs=tinysrgb&w=600';"
+               alt="馬鞍楓香林" 
+               class="w-full h-40 object-cover rounded-xl mb-2 bg-stone-200">
           <div class="flex justify-between items-baseline">
             <h4 class="font-bold text-sm text-stone-800">3. 馬鞍駐在所 (約 17K)</h4>
-            <span class="text-[11px] text-amber-700 font-medium">整段最美楓林</span>
+            <span class="text-[11px] text-amber-700 font-medium">座標 24.5623, 121.2891</span>
           </div>
-          <p class="text-xs text-stone-600 mt-1">古道賞楓的最核心熱點！四周種滿百年楓香大樹，12月轉黃轉紅時落葉鋪滿步道，宛如金色地毯。</p>
+          <p class="text-xs text-stone-600 mt-1">霞喀羅古道全線最密集的楓香純林，12月初落葉鋪滿山徑宛如紅黃地毯，為最經典的賞楓核心。</p>
         </div>
 
         <!-- 景點 4: 白石吊橋 -->
         <div>
           <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" 
-               alt="白石吊橋溪谷" class="w-full h-36 object-cover rounded-xl mb-2">
+               alt="白石吊橋溪谷" class="w-full h-40 object-cover rounded-xl mb-2 bg-stone-200">
           <div class="flex justify-between items-baseline">
             <h4 class="font-bold text-sm text-stone-800">4. 白石吊橋 (約 13.5K)</h4>
-            <span class="text-[11px] text-amber-700 font-medium">一日折返終點</span>
+            <span class="text-[11px] text-amber-700 font-medium">座標 24.5521, 121.2758</span>
           </div>
-          <p class="text-xs text-stone-600 mt-1">橫跨薩克亞金溪谷，橋長 145 公尺、深百米，景色雄偉壯觀。在此拍照、稍做野餐休息後即刻啟程折返。</p>
+          <p class="text-xs text-stone-600 mt-1">橫跨薩克亞金溪谷，長 145 公尺、懸空高度達百米，為本次一日健行的折返點與午餐野餐地。</p>
         </div>
       </div>
     </section>
 
-    <!-- 注意事項清單 -->
+    <!-- 7. 行前備忘提醒 -->
     <section class="bg-amber-100/50 rounded-2xl p-4 border border-amber-200 text-xs text-stone-700 space-y-1.5">
       <div class="font-bold text-stone-800 flex items-center gap-1.5 mb-1 text-sm">
         <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 行前備忘叮嚀
       </div>
-      <p>• <b>午餐需自備</b>：古道內無販售任何餐飲，每人需備足乾糧與至少 1,500cc 飲用水。</p>
-      <p>• <b>洋蔥式穿法</b>：山區清晨及午後低溫約 10~15°C，健行流汗後須隨時穿脫保暖防風外套。</p>
-      <p>• <b>必備頭燈照明</b>：冬日天黑早（約 17:00 日落），隨身背包請務必放置頭燈或手電筒。</p>
+      <p>• <b>午餐行動糧</b>：古道內無販售站，請於早餐點（竹東阿胖豆漿）備妥飯糰或乾糧，每人至少攜帶 1,500cc 飲水。</p>
+      <p>• <b>洋蔥式穿法</b>：山區清晨及午後低溫約 10~15°C，行進易出汗，請備防風保暖外套隨時穿脫。</p>
+      <p>• <b>必備頭燈照明</b>：冬季約 17:00 開始天黑，隨身背包請務必攜帶頭燈或手電筒以防萬一。</p>
     </section>
 
   </main>
 
-  <!-- 底部固定按鈕 -->
+  <!-- 底部固定導航欄 -->
   <footer class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur border-t border-stone-200 py-2.5 px-4 shadow-lg z-20">
     <div class="max-w-md mx-auto flex items-center justify-between">
       <div class="text-xs text-stone-500">
         12/5 霞喀羅賞楓 4人行
       </div>
-      <a href="https://www.google.com/maps/dir/?api=1&destination=霞喀羅古道養老端登山口" target="_blank"
-         class="bg-amber-700 text-white text-xs px-4 py-2 rounded-xl font-bold shadow hover:bg-amber-800 transition flex items-center gap-1.5">
-        <i class="fa-solid fa-diamond-turn-right"></i> 一鍵導航出發
-      </a>
+      <div class="flex gap-2">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=阿胖豆漿" target="_blank"
+           class="bg-amber-100 text-amber-800 text-xs px-3 py-2 rounded-xl font-bold shadow-sm hover:bg-amber-200 transition flex items-center gap-1">
+          <i class="fa-solid fa-mug-saucer"></i> 早餐導航
+        </a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=霞喀羅古道養老端登山口" target="_blank"
+           class="bg-amber-700 text-white text-xs px-3.5 py-2 rounded-xl font-bold shadow hover:bg-amber-800 transition flex items-center gap-1">
+          <i class="fa-solid fa-location-arrow"></i> 登山口導航
+        </a>
+      </div>
     </div>
   </footer>
 
-  <!-- 互動腳本：串接天氣與下拉選單 -->
+  <!-- 互動 JavaScript 代碼 -->
   <script>
-    // 1. 晚餐店家資料
+    // ----------------- 早餐資料庫 -----------------
+    const breakfastData = {
+      apang: {
+        title: "竹東阿胖豆漿",
+        desc: "竹東知名排隊老店，登山客進尖石前的補給熱點。以獨特的粄條蛋餅與高麗菜福州包聞名，香氣十足且出餐快速。",
+        openTime: "05:30 - 10:30 (清晨即可取餐)",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=竹東阿胖豆漿",
+        menuCategories: [
+          {
+            category: "招牌現場熱食（現點現吃）",
+            items: [
+              { name: "招牌粄條韭菜蛋餅", price: "$45", note: "外皮厚Q有彈性，韭菜冬粉內餡超香" },
+              { name: "粄條原味/肉鬆蛋餅", price: "$40 / $45", note: "不吃韭菜的首選" },
+              { name: "手工福州包 (5顆)", price: "$40", note: "高麗菜豬肉餡、底層煎得金黃酥脆" },
+              { name: "傳統薄皮蛋餅", price: "$30", note: "古早味蔥花蛋香" }
+            ]
+          },
+          {
+            category: "登山午餐外帶推薦（好攜帶、冷了也好吃）",
+            items: [
+              { name: "古早味傳統飯糰", price: "$40", note: "老油條、肉鬆、菜脯，扎實飽足感高" },
+              { name: "肉鬆蛋飯糰", price: "$50", note: "高熱量登山補給首選" },
+              { name: "手工肉包 / 菜包", price: "$20", note: "麵皮鬆軟，適合放背包當行動糧" },
+              { name: "黑糖饅頭 / 蔥花捲", price: "$18", note: "純粹耐嚼，高碳水補充" }
+            ]
+          },
+          {
+            category: "豆漿與飲品",
+            items: [
+              { name: "香醇溫豆漿 (無糖/微糖)", price: "$20", note: "非基改黃豆研磨，暖胃提神" },
+              { name: "鹹豆漿 (加辣/加蛋)", price: "$35", note: "撒上酥脆油條與蔥花蝦皮" },
+              { name: "古早味米漿 / 豆漿紅茶", price: "$20", note: "濃郁花生香氣" }
+            ]
+          }
+        ]
+      },
+      yuquan: {
+        title: "竹東玉泉早餐店",
+        desc: "在地數十年古早味排隊老鋪，主打每日現桿的水煎包與酥皮粄條蛋餅，份量十足又實惠。",
+        openTime: "05:00 - 11:00",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=竹東玉泉早餐店",
+        menuCategories: [
+          {
+            category: "現做招牌熱食",
+            items: [
+              { name: "招牌水煎包 (高麗菜/鮮肉)", price: "$18", note: "外皮焦脆爆汁，蔬菜清甜" },
+              { name: "客家粄條蛋餅", price: "$40", note: "滑嫩Q彈，淋上特製蒜蓉醬" },
+              { name: "油條夾燒餅", price: "$35", note: "老油條酥脆不油膩" },
+              { name: "蔥油餅加蛋", price: "$40", note: "現桿麵皮蔥香濃郁" }
+            ]
+          },
+          {
+            category: "午餐外帶糧食",
+            items: [
+              { name: "紫米/白米雙色飯糰", price: "$45", note: "耐嚼有飽足感，古道野餐良伴" },
+              { name: "甜/鹹酥餅", price: "$20", note: "層次分明，隨身口袋點心" }
+            ]
+          },
+          {
+            category: "傳統飲品",
+            items: [
+              { name: "現磨溫豆漿 (大/小)", price: "$25 / $20", note: "天然豆香，口感濃醇" },
+              { name: "花生糙米漿", price: "$25", note: "濃郁暖胃" }
+            ]
+          }
+        ]
+      },
+      steamed_buns: {
+        title: "竹東無名小籠包 / 早點",
+        desc: "清晨熱氣蒸騰的手工小籠包店，皮厚度適中、肉餡鮮甜帶湯汁，整籠外帶到登山口吃也很過癮。",
+        openTime: "05:30 - 10:00",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=竹東小籠包早點",
+        menuCategories: [
+          {
+            category: "招牌現蒸蒸籠",
+            items: [
+              { name: "現蒸手工小籠包 (一籠8顆)", price: "$80", note: "皮薄多汁，蔥肉餡鮮香" },
+              { name: "手工鮮肉大包", price: "$25", note: "肉餡扎實，老麵麵皮香" },
+              { name: "高麗菜冬粉包", price: "$22", note: "清爽不油膩" }
+            ]
+          },
+          {
+            category: "傳統乾糧與蛋餅",
+            items: [
+              { name: "古早味粉漿蛋餅", price: "$35", note: "口感軟嫩厚實" },
+              { name: "傳統大飯糰", price: "$40", note: "菜脯、酸菜、肉鬆黃金比例" }
+            ]
+          },
+          {
+            category: "暖身湯品飲料",
+            items: [
+              { name: "招牌鹹豆漿加油條", price: "$35", note: "濃郁如蒸蛋，天冷必喝" },
+              { name: "熱豆漿 / 冰豆漿", price: "$20", note: "甜度適中" }
+            ]
+          }
+        ]
+      }
+    };
+
+    function updateBreakfast(key) {
+      const data = breakfastData[key];
+      document.getElementById('bfTitle').innerText = data.title;
+      document.getElementById('bfDesc').innerText = data.desc;
+      document.getElementById('bfOpenTime').innerHTML = `<i class="fa-regular fa-clock"></i> 營業時間：${data.openTime}`;
+      document.getElementById('bfNavBtn').href = data.mapsUrl;
+
+      const menuBox = document.getElementById('bfMenuContainer');
+      let menuHtml = '';
+
+      data.menuCategories.forEach(cat => {
+        menuHtml += `
+          <div class="bg-white rounded-lg p-2.5 shadow-xs border border-amber-100">
+            <div class="text-[12px] font-bold text-amber-800 border-b border-stone-100 pb-1 mb-1.5 flex justify-between">
+              <span>● ${cat.category}</span>
+            </div>
+            <div class="divide-y divide-stone-50">
+        `;
+        cat.items.forEach(item => {
+          menuHtml += `
+            <div class="py-1.5 flex justify-between items-start text-xs">
+              <div>
+                <span class="font-medium text-stone-800">${item.name}</span>
+                <span class="text-[11px] text-stone-400 block">${item.note}</span>
+              </div>
+              <span class="font-bold text-amber-700 ml-2 whitespace-nowrap">${item.price}</span>
+            </div>
+          `;
+        });
+        menuHtml += `</div></div>`;
+      });
+      menuBox.innerHTML = menuHtml;
+    }
+
+    const bfSelect = document.getElementById('breakfastSelect');
+    bfSelect.addEventListener('change', (e) => updateBreakfast(e.target.value));
+    updateBreakfast(bfSelect.value);
+
+    // ----------------- 晚餐資料庫 -----------------
     const restaurantData = {
       neiwan_tea: {
         title: "內灣茶堂客家菜",
-        desc: "位於內灣老街旁，提供道地擂茶、客家小炒、薑絲大腸與野薑花炒蛋，份量適合4人合菜聚餐。",
-        tag: "老街客家合菜推薦",
-        mapsUrl: "https://www.google.com/maps/search/?api=1&query=內灣茶堂客家菜"
+        desc: "內灣老街高評價合菜餐廳，附贈熱擂茶與客家麻糬，出菜迅速且份量充足，非常適合4人爬完山聚餐。",
+        openTime: "10:30 - 20:00",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=內灣茶堂客家菜",
+        menuCategories: [
+          {
+            category: "4人精選合菜推薦套餐 (約 $1,000 - $1,200)",
+            items: [
+              { name: "客家小炒", price: "必點", note: "鹹香魷魚與五花肉，極下飯" },
+              { name: "薑絲炒大腸", price: "招牌", note: "酸嗆開胃、大腸Ｑ彈" },
+              { name: "野薑花炒蛋 / 烘蛋", price: "特色", note: "內灣在地野薑花香氣" },
+              { name: "油雞 / 白斬閹雞", price: "招牌", note: "肉質緊實附客家桔醬" },
+              { name: "福菜三層肉湯 / 筍絲排骨湯", price: "湯品", note: "客家傳統清香甘醇" },
+              { name: "白飯吃到飽 + 免費冷熱擂茶與麻糬", price: "招待", note: "餐前擂茶、餐後麻糬" }
+            ]
+          },
+          {
+            category: "熱門單點熱炒類",
+            items: [
+              { name: "客家鹹豬肉", price: "$200", note: "附特調蒜醋醬" },
+              { name: "炒野蓮 / 時令高山青菜", price: "$150", note: "大火快炒清脆甘甜" },
+              { name: "九層塔蛋 / 菜脯蛋", price: "$150", note: "經典家常美味" },
+              { name: "紅燒豆腐 / 鐵板豆腐", price: "$180", note: "醬汁濃郁好配飯" }
+            ]
+          },
+          {
+            category: "湯品與特產",
+            items: [
+              { name: "客家福菜肉片湯", price: "$180", note: "古法醃製福菜清爽不膩" },
+              { name: "苦瓜鳳梨雞湯", price: "$250", note: "微苦回甘，生津解燥" }
+            ]
+          }
+        ]
       },
       goose_sister: {
         title: "鵝姐客家美食",
-        desc: "內灣在地知名客家小吃，招牌客家大湯圓、鹹湯圓與各式家常菜，平價道地出餐快速。",
-        tag: "道地客家古早味",
-        mapsUrl: "https://www.google.com/maps/search/?api=1&query=內灣老街鵝姐客家美食"
+        desc: "內灣在地知名的古早味傳統麵食小吃，以現包客家大湯圓、鹹湯圓與傳統米食聞名，平價道地。",
+        openTime: "09:00 - 19:30",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=內灣老街鵝姐客家美食",
+        menuCategories: [
+          {
+            category: "招牌經典米麵食",
+            items: [
+              { name: "客家大湯圓 (5粒)", price: "$80", note: "皮Q爆餡，包滿香菇肉末與蝦米" },
+              { name: "傳統客家鹹湯圓", price: "$70", note: "香菇肉絲、韭菜、油蔥傳統湯頭" },
+              { name: "乾/湯粄條", price: "$60", note: "純米製作手工粄條，淋上招牌油蔥" },
+              { name: "乾/湯油麵・米粉", price: "$60", note: "古早味油蔥湯頭" },
+              { name: "客家滷肉飯", price: "$40", note: "手切帶皮肉丁，鹹香適中" }
+            ]
+          },
+          {
+            category: "特色小菜與黑白切",
+            items: [
+              { name: "客家粉腸 / 嘴邊肉", price: "$70", note: "新鮮川燙，附特調桔醬油膏" },
+              { name: "燙時令青菜", price: "$45", note: "拌上濃郁自炸油蔥酥" },
+              { name: "滷油豆腐 / 滷蛋", price: "$30", note: "滷汁入味多汁" },
+              { name: "涼拌木耳 / 涼拌小黃瓜", price: "$40", note: "酸甜爽脆開胃菜" }
+            ]
+          },
+          {
+            category: "熱湯類",
+            items: [
+              { name: "貢丸湯 (新竹摃丸)", price: "$45", note: "彈牙多汁，撒上芹菜末" },
+              { name: "粉腸湯 / 肝連湯", price: "$60", note: "大骨慢熬甘甜高湯" }
+            ]
+          }
+        ]
       },
       yulao_tofu: {
         title: "宇老臭豆腐 & 魯壁一家人",
-        desc: "下山途中宇老觀景台旁，招牌特製韭菜醬臭豆腐與馬告香腸，亦可至景觀餐廳享用熱騰騰原民合菜火鍋。",
-        tag: "高山夕陽景觀美食",
-        mapsUrl: "https://www.google.com/maps/search/?api=1&query=宇老臭豆腐"
+        desc: "坐落宇老鞍部（海拔1450m），下山途中必停！既有熱呼呼的爆汁臭豆腐，也有原住民風味合菜與熱火鍋。",
+        openTime: "11:00 - 18:30 (冬季山區早打烊)",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=宇老臭豆腐",
+        menuCategories: [
+          {
+            category: "宇老臭豆腐必點熱食",
+            items: [
+              { name: "招牌韭菜醬臭豆腐 (大/小)", price: "$60 / $80", note: "外酥內嫩，特調特產韭菜辣椒醬" },
+              { name: "高山馬告香腸", price: "$45", note: "帶有檸檬香茅香氣的山豬肉香腸" },
+              { name: "竹筍香菇貢丸湯", price: "$50", note: "熱湯暖身解高山寒氣" },
+              { name: "馬告米血糕", price: "$50", note: "口感軟糯，沾醬香辣過癮" }
+            ]
+          },
+          {
+            category: "魯壁一家人 / 景觀合菜（4人推薦）",
+            items: [
+              { name: "原住民馬告烤肉拼盤", price: "$350", note: "炭火鹹香、皮脆肉嫩" },
+              { name: "刺蔥煎蛋 / 刺蔥烘蛋", price: "$180", note: "高山特色香草獨特清香" },
+              { name: "高山時蔬清炒（高麗菜）", price: "$160", note: "尖石高山蔬菜清脆甜美" },
+              { name: "馬告香菇燉雞湯鍋", price: "$480", note: "濃郁回甘，暖心大鍋湯" }
+            ]
+          }
+        ]
       }
     };
 
@@ -257,16 +555,41 @@
       const data = restaurantData[key];
       document.getElementById('restTitle').innerText = data.title;
       document.getElementById('restDesc').innerText = data.desc;
-      document.getElementById('restTag').innerText = data.tag;
+      document.getElementById('restOpenTime').innerHTML = `<i class="fa-regular fa-clock"></i> 營業時間：${data.openTime}`;
       document.getElementById('restNavBtn').href = data.mapsUrl;
+
+      const menuBox = document.getElementById('restMenuContainer');
+      let menuHtml = '';
+
+      data.menuCategories.forEach(cat => {
+        menuHtml += `
+          <div class="bg-white rounded-lg p-2.5 shadow-xs border border-amber-100">
+            <div class="text-[12px] font-bold text-amber-800 border-b border-stone-100 pb-1 mb-1.5 flex justify-between">
+              <span>● ${cat.category}</span>
+            </div>
+            <div class="divide-y divide-stone-50">
+        `;
+        cat.items.forEach(item => {
+          menuHtml += `
+            <div class="py-1.5 flex justify-between items-start text-xs">
+              <div>
+                <span class="font-medium text-stone-800">${item.name}</span>
+                <span class="text-[11px] text-stone-400 block">${item.note}</span>
+              </div>
+              <span class="font-bold text-amber-700 ml-2 whitespace-nowrap">${item.price}</span>
+            </div>
+          `;
+        });
+        menuHtml += `</div></div>`;
+      });
+      menuBox.innerHTML = menuHtml;
     }
 
-    // 監聽下拉選單
-    const selectElem = document.getElementById('restaurantSelect');
-    selectElem.addEventListener('change', (e) => updateRestaurant(e.target.value));
-    updateRestaurant(selectElem.value); // 初始化
+    const restSelect = document.getElementById('restaurantSelect');
+    restSelect.addEventListener('change', (e) => updateRestaurant(e.target.value));
+    updateRestaurant(restSelect.value);
 
-    // 2. 串接 Open-Meteo 免費天氣 API (尖石鄉座標 24.60, 121.28)
+    // ----------------- 即時氣象串接 (尖石鄉座標) -----------------
     async function fetchWeather() {
       try {
         const url = 'https://api.open-meteo.com/v1/forecast?latitude=24.60&longitude=121.28&current=temperature_2m,relative_humidity_2m,weather_code&timezone=Asia%2FTaipei';
@@ -280,12 +603,11 @@
         document.getElementById('weather-temp').innerText = `${temp}°C`;
         document.getElementById('weather-humidity').innerText = `${humidity}%`;
 
-        // 簡易天氣狀態代碼映射
         let desc = "晴朗舒適";
         if (code >= 1 && code <= 3) desc = "多雲到陰";
         else if (code >= 45 && code <= 48) desc = "山區有霧";
-        else if (code >= 51 && code <= 67) desc = "有局部短暫雨";
-        else if (code >= 80) desc = "陣雨，注意步道濕滑";
+        else if (code >= 51 && code <= 67) desc = "局部短暫雨";
+        else if (code >= 80) desc = "陣雨，注意濕滑";
 
         document.getElementById('weather-desc').innerText = `目前天氣：${desc}`;
       } catch (err) {
